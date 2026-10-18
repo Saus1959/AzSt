@@ -1,6 +1,6 @@
-import './globals.css';
+import "./globals.css";
 
-export const metadata = { title: 'Team Dashboard' };
+export const metadata = { title: "AzSt" };
 
 export default function RootLayout({ children }) {
   return (
