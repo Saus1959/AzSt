@@ -1,17 +1,12 @@
-import { NextResponse } from "next/server";
-import { connect, ensureDepots } from "@/lib/depotDb";
+]import { NextResponse } from 'next/server';
+import { route } from '@/lib/api';
+import { canSee } from '@/lib/constants';
+import { ensureDepots } from '@/lib/depotDb';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-export async function GET() {
-  try {
-    await connect();
-    const depots = await ensureDepots();
-    return NextResponse.json({ depots });
-  } catch (e) {
-    return NextResponse.json(
-      { error: "Failed to load depots" },
-      { status: 500 },
-    );
-  }
-}
+// Каждый видит только свои депо: Leadership — все три, Electronics/Mechanics — своё, Programming — ничего.
+export const GET = route(async (_req, { user }) => {
+  const depots = (await ensureDepots()).filter((d) => canSee(user, d.key));
+  return NextResponse.json({ depots });
+});

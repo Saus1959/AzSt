@@ -12,6 +12,7 @@ import {
   FileText,
   Users,
   LogOut,
+  ShieldCheck,
 } from "lucide-react";
 import { api } from "@/lib/client";
 import { useT } from "@/lib/i18n";
@@ -49,6 +50,7 @@ export default function Shell({ user, children }) {
     sec("leadership"),
     { href: "/docs", label: "Docs", Icon: FileText },
     { href: "/team", label: "Team", Icon: Users },
+    user.isAdmin && { href: "/admin", label: "Admin", Icon: ShieldCheck },
   ].filter(Boolean);
 
   const logout = async () => {
@@ -61,9 +63,13 @@ export default function Shell({ user, children }) {
       <div className="flex min-h-screen flex-col md:flex-row">
         <aside className="border-b border-line bg-white md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 md:border-b-0 md:border-r">
           <div className="flex items-center gap-2.5 px-5 py-4 md:py-6">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-brand-500 font-bold text-white">
-              E
-            </div>
+            <div
+              className="grid h-9 w-9 place-items-center rounded-xl font-bold text-white"
+              style={{
+                backgroundImage: "url('/logov1.jpg')",
+                backgroundSize: "cover",
+              }}
+            ></div>
             <span className="font-semibold">AzSt</span>
           </div>
           <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:overflow-visible">

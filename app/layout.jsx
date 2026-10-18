@@ -1,6 +1,6 @@
 import "./globals.css";
 
-export const metadata = { title: "AzSt" };
+export const metadata = { title: "AzSt", icons: { icon: "/logov1.jpg" } };
 
 export default function RootLayout({ children }) {
   return (

@@ -34,6 +34,7 @@ export default function DepotBoard() {
   const [activeKey, setActiveKey] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | saving | saved | error
   const [loadError, setLoadError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [query, setQuery] = useState("");
   const [addingColumn, setAddingColumn] = useState(false);
   const [newColumnLabel, setNewColumnLabel] = useState("");
@@ -50,6 +51,7 @@ export default function DepotBoard() {
         if (cancelled) return;
         setDepots(data.depots);
         setActiveKey(data.depots[0]?.key ?? null);
+        setLoaded(true);
       })
       .catch(() => !cancelled && setLoadError(true));
     return () => {
@@ -221,7 +223,12 @@ export default function DepotBoard() {
         {t("depotLoadError")}
       </p>
     );
-  if (!depot) return <p className="p-4 text-stone-500">{t("loading")}</p>;
+  if (!depot)
+    return (
+      <p className="p-4 text-stone-500">
+        {loaded ? t("noAccess") : t("loading")}
+      </p>
+    );
 
   return (
     <div className="space-y-5">
