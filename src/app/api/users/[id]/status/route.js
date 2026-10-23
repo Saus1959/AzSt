@@ -1,21 +1,29 @@
 import { NextResponse } from 'next/server';
 import { route, body, fail, validId } from '@/lib/api';
-import { STATUS_HOURS, isLeader } from '@/lib/constants';
+import { isLeader } from '@/lib/constants';
+import { getSettings } from '@/lib/settings';
 import User from '@/models/User';
 import Membership from '@/models/Membership';
 
-// The status never outlives the day: it is cut at midnight Baku time (UTC+4, no DST).
-const BAKU_MS = 4 * 3600e3;
-const endOfDay = (now) => Math.floor((now + BAKU_MS) / 864e5) * 864e5 + 864e5 - BAKU_MS;
-
-// Mark yourself "at work" for N hours (counted from now). Only for yourself.
+// Mark yourself "at work", counted from now. Only for yourself.
+//   { hours }    one of the options the admin set (Admin → Work status)
+//   { minutes }  any duration up to the admin's maximum, when free choice is on; admins: up to 24 h always
 export const PUT = route(async (req, { user, params }) => {
   if (!validId(params.id)) return fail('Not found', 404);
   if (params.id !== user.id) return fail('Forbidden', 403);
-  const hours = Number((await body(req)).hours);
-  if (!STATUS_HOURS.includes(hours)) return fail('Invalid duration');
-  const now = Date.now();
-  const until = new Date(Math.min(now + hours * 3600e3, endOfDay(now)));
+  const d = await body(req);
+  const s = await getSettings();
+  let min;
+  if (d.minutes !== undefined) {
+    min = Math.round(Number(d.minutes));
+    const limit = (user.isAdmin ? 24 : s.statusFree ? s.statusMaxHours : 0) * 60;
+    if (!Number.isFinite(min) || min < 1 || min > limit) return fail('Invalid duration');
+  } else {
+    const h = Math.round(Number(d.hours) * 100) / 100;
+    if (!s.statusHours.includes(h)) return fail('Invalid duration');
+    min = Math.round(h * 60);
+  }
+  const until = new Date(Date.now() + min * 60e3);
   await User.updateOne({ _id: user.id }, { $set: { activeUntil: until } });
   return NextResponse.json({ activeUntil: until.toISOString() });
 });
