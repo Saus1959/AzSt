@@ -33,3 +33,6 @@ export async function fileToAvatar(file, size = 256) {
   ctx.drawImage(bmp, (bmp.width - s) / 2, (bmp.height - s) / 2, s, s, 0, 0, size, size);
   return c.toDataURL('image/jpeg', 0.85);
 }
+
+// Is this person marked "at work" right now? (u.activeUntil is an ISO string or null)
+export const isActive = (u, now = Date.now()) => !!u?.activeUntil && new Date(u.activeUntil).getTime() > now;

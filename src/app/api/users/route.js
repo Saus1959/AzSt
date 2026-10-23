@@ -6,7 +6,7 @@ import Membership from '@/models/Membership';
 
 // Members of the CURRENT group (no passwords) + vacant places ("npc").
 export const GET = route(async (_req, { user }) => {
-  const ms = await Membership.find({ group: user.group }).populate('user', 'username name isAdmin avatarV').lean();
+  const ms = await Membership.find({ group: user.group }).populate('user', 'username name isAdmin avatarV activeUntil').lean();
   const byRole = (a, b) => TITLES.indexOf(a.title) - TITLES.indexOf(b.title);
   const users = ms.filter((m) => m.user).map((m) => memberView(m.user, m))
     .sort((a, b) => byRole(a, b) || a.name.localeCompare(b.name));

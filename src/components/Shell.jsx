@@ -19,6 +19,7 @@ import { api, avatarUrl } from "@/lib/client";
 import { useT } from "@/lib/i18n";
 import { LABEL, canSee, groupName, visibleDepots } from "@/lib/constants";
 import { Avatar, LangSwitch, cx } from "./ui";
+import { usePresence, PresenceChip, PresenceNudge, PresenceModal } from "./Presence";
 
 const UserCtx = createContext(null);
 export const useUser = () => useContext(UserCtx);
@@ -32,6 +33,7 @@ const ICON = {
 export default function Shell({ user, children }) {
   const path = usePathname();
   const t = useT();
+  const p = usePresence(user);
   const sec = (p) =>
     canSee(user, p) && {
       href: `/section/${p}`,
@@ -107,12 +109,13 @@ export default function Shell({ user, children }) {
         </aside>
         <div className="min-w-0 flex-1">
           <header className="flex items-center justify-end gap-3 px-6 py-4">
+            <PresenceChip p={p} />
             <LangSwitch />
             <Link
               href={`/team/${user.username}`}
               className="flex items-center gap-2 rounded-xl border border-line bg-white px-2.5 py-1.5"
             >
-              <Avatar name={user.name} src={avatarUrl(user)} size={28} />
+              <Avatar name={user.name} src={avatarUrl(user)} size={28} active={p.active} />
               <span className="text-sm font-medium">{user.name}</span>
             </Link>
             <button
@@ -123,7 +126,11 @@ export default function Shell({ user, children }) {
               <LogOut size={16} />
             </button>
           </header>
-          <main className="px-6 pb-10">{children}</main>
+          <main className="px-6 pb-10">
+            <PresenceNudge p={p} />
+            {children}
+          </main>
+          <PresenceModal p={p} />
         </div>
       </div>
     </UserCtx.Provider>

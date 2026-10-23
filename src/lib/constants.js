@@ -35,3 +35,6 @@ export const canSee = (u, area) => area === 'all' || isLeader(u) || u.position =
 export const visibleDepots = (u) =>
   isLeader(u) ? DEPOS : DEPOS.filter((d) => d === u.position || (u.extraDepots || []).includes(d));
 export const canSeeDepot = (u, key) => visibleDepots(u).includes(key);
+
+// "At work" status: allowed durations (hours).
+export const STATUS_HOURS = [1, 2, 4, 6];

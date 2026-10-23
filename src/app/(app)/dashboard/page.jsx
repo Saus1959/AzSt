@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import { Boxes, PauseCircle, FileText, Users } from "lucide-react";
-import { useApi } from "@/lib/client";
+import { useApi, avatarUrl, isActive } from "@/lib/client";
 import { useT } from "@/lib/i18n";
 import { useUser } from "@/components/Shell";
 import { groupName } from "@/lib/constants";
-import { Card, Badge, PageHead, Stat } from "@/components/ui";
+import { Card, Badge, Avatar, PageHead, Stat } from "@/components/ui";
 
 export default function Dashboard() {
   const t = useT();
@@ -19,6 +19,7 @@ export default function Dashboard() {
     d.items.filter((i) => !i.active).map((i) => ({ ...i, depot: d.key })),
   );
   const depotName = (k) => t("depot_" + k);
+  const onDuty = team.filter((u) => isActive(u));
 
   return (
     <>
@@ -107,6 +108,23 @@ export default function Dashboard() {
           )}
         </Card>
 
+        <div className="space-y-4">
+        <Card>
+          <h2 className="mb-3 flex items-center gap-2 font-semibold">{t("onDuty")} <Badge tone="green">{onDuty.length}</Badge></h2>
+          {!onDuty.length ? (
+            <p className="text-sm text-mute">{t("nobodyOnDuty")}</p>
+          ) : (
+            <ul className="space-y-2.5">
+              {onDuty.map((u) => (
+                <li key={u.id} className="flex items-center gap-3 text-sm">
+                  <Avatar name={u.name} src={avatarUrl(u)} size={30} active />
+                  <span className="min-w-0 flex-1 truncate font-medium">{u.name}</span>
+                  <span className="text-xs text-mute">{new Date(u.activeUntil).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
         <Card>
           <h2 className="mb-3 font-semibold">{t("recentDocs")}</h2>
           {!docs.length ? (
@@ -125,6 +143,7 @@ export default function Dashboard() {
             </ul>
           )}
         </Card>
+        </div>
       </div>
     </>
   );

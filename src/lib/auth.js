@@ -24,6 +24,7 @@ export const signToken = (user) =>
 
 export const publicUser = (u) => ({
   id: String(u._id), username: u.username, name: u.name, isAdmin: !!u.isAdmin, avatarV: u.avatarV || 0,
+  activeUntil: u.activeUntil ? new Date(u.activeUntil).toISOString() : null,
 });
 
 // A user as seen inside one group (account + membership).

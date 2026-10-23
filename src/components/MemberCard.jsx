@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { UserRound } from 'lucide-react';
 import { useT } from '@/lib/i18n';
-import { avatarUrl } from '@/lib/client';
-import { Card, Avatar } from './ui';
+import { avatarUrl, isActive } from '@/lib/client';
+import { Card, Avatar, Badge } from './ui';
 
 // u === null → vacancy ("npc"): { title } only
 export default function MemberCard({ u, vacancy }) {
@@ -22,11 +22,14 @@ export default function MemberCard({ u, vacancy }) {
   return (
     <Card>
       <Link href={`/team/${u.username}`} className="flex items-center gap-3">
-        <Avatar name={u.name} src={avatarUrl(u)} />
+        <Avatar name={u.name} src={avatarUrl(u)} active={isActive(u)} />
         <div className="min-w-0">
           <div className="truncate font-medium">{u.name}</div>
           <div className="text-sm text-mute">{u.title}</div>
         </div>
+        <span className="ml-auto shrink-0">
+          <Badge tone={isActive(u) ? 'green' : 'gray'}>{t(isActive(u) ? 'statusActive' : 'statusPassive')}</Badge>
+        </span>
       </Link>
     </Card>
   );

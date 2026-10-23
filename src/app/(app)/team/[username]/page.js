@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useApi, api, avatarUrl, fileToAvatar } from '@/lib/client';
+import { useApi, api, avatarUrl, fileToAvatar, isActive } from '@/lib/client';
 import { useT } from '@/lib/i18n';
 import { useUser } from '@/components/Shell';
 import { LABEL } from '@/lib/constants';
@@ -60,6 +60,12 @@ export default function Profile() {
     } catch (e) { setMsg({ ok: false, text: e.message }); }
     setBusy(false);
   };
+  const turnOff = async () => {
+    try {
+      await api(`/api/users/${u.id}/status`, { method: 'DELETE' });
+      reload();
+    } catch (e) { setMsg({ ok: false, text: e.message }); }
+  };
   const saveAdmin = (e) => {
     e.preventDefault();
     patch({ name: f.name, ...(f.password ? { password: f.password } : {}) });
@@ -70,10 +76,14 @@ export default function Profile() {
       <PageHead title={u.name} sub={t('profile')} />
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="flex flex-col items-center gap-2 text-center">
-          <Avatar name={u.name} src={avatarUrl(u)} size={88} />
+          <Avatar name={u.name} src={avatarUrl(u)} size={88} active={isActive(u)} />
           <div className="mt-2 text-lg font-semibold">{u.name}</div>
           <div className="text-sm text-mute">{u.title}</div>
           <Badge>{LABEL[u.position]}</Badge>
+          <Badge tone={isActive(u) ? 'green' : 'gray'}>{t(isActive(u) ? 'statusActive' : 'statusPassive')}</Badge>
+          {!isSelf && isActive(u) && (me.isAdmin || me.position === 'leadership') && (
+            <Btn type="button" v="danger" onClick={turnOff}>{t('statusOff')}</Btn>
+          )}
           <div className="mt-2 text-xs text-mute">@{u.username}</div>
           {(isSelf || me.isAdmin) && (
             <div className="mt-3 flex flex-col items-center gap-2">

@@ -9,6 +9,8 @@ const UserSchema = new mongoose.Schema(
     isAdmin: { type: Boolean, default: false }, // director: sees and manages every group
     // Profile photo (256×256 JPEG, ~20-40 KB). Never loaded with the user; served by /api/users/:id/avatar.
     avatar: { type: Buffer, select: false },
+    // "At work" status: active while activeUntil is in the future. Expires by itself, nothing to switch off.
+    activeUntil: { type: Date },
     avatarV: { type: Number, default: 0 }, // 0 = no photo; otherwise the upload time (used as cache-buster)
   },
   { timestamps: true }
