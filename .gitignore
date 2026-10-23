@@ -1,4 +1,10 @@
 node_modules
 .next
-.env.local
+out
+.env
+.env.*
+!.env.example
 PASSWORDS.md
+*.log
+.DS_Store
+.vercel

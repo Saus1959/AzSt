@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "seed": "node --env-file=.env.local scripts/seed.mjs"
+    "seed": "node --env-file=.env.local src/scripts/seed.mjs",
+    "migrate": "node --env-file=.env.local src/scripts/migrate.mjs"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
