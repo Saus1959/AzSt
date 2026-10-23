@@ -23,7 +23,7 @@ export const signToken = (user) =>
   new SignJWT({}).setProtectedHeader({ alg: 'HS256' }).setSubject(String(user._id)).setExpirationTime('7d').sign(secret());
 
 export const publicUser = (u) => ({
-  id: String(u._id), username: u.username, name: u.name, isAdmin: !!u.isAdmin,
+  id: String(u._id), username: u.username, name: u.name, isAdmin: !!u.isAdmin, avatarV: u.avatarV || 0,
 });
 
 // A user as seen inside one group (account + membership).

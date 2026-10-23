@@ -15,7 +15,7 @@ import {
   ShieldCheck,
   ArrowLeftRight,
 } from "lucide-react";
-import { api } from "@/lib/client";
+import { api, avatarUrl } from "@/lib/client";
 import { useT } from "@/lib/i18n";
 import { LABEL, canSee, groupName, visibleDepots } from "@/lib/constants";
 import { Avatar, LangSwitch, cx } from "./ui";
@@ -112,7 +112,7 @@ export default function Shell({ user, children }) {
               href={`/team/${user.username}`}
               className="flex items-center gap-2 rounded-xl border border-line bg-white px-2.5 py-1.5"
             >
-              <Avatar name={user.name} size={28} />
+              <Avatar name={user.name} src={avatarUrl(user)} size={28} />
               <span className="text-sm font-medium">{user.name}</span>
             </Link>
             <button

@@ -128,6 +128,10 @@ const D = {
   changePassword: ["Şifrəni dəyiş", "Change password"],
   manageMember: ["Üzvü idarə et", "Manage member"],
   profile: ["Profil", "Profile"],
+  changePhoto: ["Şəkli dəyiş", "Change photo"],
+  removePhoto: ["Şəkli sil", "Remove photo"],
+  photoHint: ["JPG, PNG və ya WebP", "JPG, PNG or WebP"],
+  photoBad: ["Şəkil açıla bilmədi", "Could not read this image"],
 
   // groups
   groupsTitle: ["Qrup seçin", "Choose a group"],

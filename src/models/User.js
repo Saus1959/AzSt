@@ -7,6 +7,9 @@ const UserSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     passwordHash: { type: String, required: true, select: false },
     isAdmin: { type: Boolean, default: false }, // director: sees and manages every group
+    // Profile photo (256×256 JPEG, ~20-40 KB). Never loaded with the user; served by /api/users/:id/avatar.
+    avatar: { type: Buffer, select: false },
+    avatarV: { type: Number, default: 0 }, // 0 = no photo; otherwise the upload time (used as cache-buster)
   },
   { timestamps: true }
 );

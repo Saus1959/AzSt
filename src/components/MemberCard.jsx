@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { UserRound } from 'lucide-react';
 import { useT } from '@/lib/i18n';
+import { avatarUrl } from '@/lib/client';
 import { Card, Avatar } from './ui';
 
 // u === null → vacancy ("npc"): { title } only
@@ -21,7 +22,7 @@ export default function MemberCard({ u, vacancy }) {
   return (
     <Card>
       <Link href={`/team/${u.username}`} className="flex items-center gap-3">
-        <Avatar name={u.name} />
+        <Avatar name={u.name} src={avatarUrl(u)} />
         <div className="min-w-0">
           <div className="truncate font-medium">{u.name}</div>
           <div className="text-sm text-mute">{u.title}</div>

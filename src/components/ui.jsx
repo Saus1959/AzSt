@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLang } from '@/lib/store';
 
 export const cx = (...a) => a.filter(Boolean).join(' ');
@@ -30,8 +30,17 @@ export const Badge = ({ tone = 'blue', children }) => (
 export const STATUS_TONE = { ok: 'blue', in_use: 'gray', low: 'rose', out: 'rose', broken: 'rose' };
 export const STATUS_BAR = { ok: 'bg-brand-300', in_use: 'bg-slate-300', low: 'bg-rose-200', out: 'bg-rose-300', broken: 'bg-rose-400' };
 
-export function Avatar({ name = '?', size = 40 }) {
+export function Avatar({ name = '?', size = 40, src }) {
+  const [broken, setBroken] = useState(false);
+  useEffect(() => setBroken(false), [src]);
   const ini = name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+  if (src && !broken) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={src} alt={name} width={size} height={size} onError={() => setBroken(true)}
+        className="shrink-0 rounded-full object-cover" style={{ width: size, height: size }} />
+    );
+  }
   return (
     <div className="grid shrink-0 place-items-center rounded-full bg-brand-100 font-semibold text-brand-600"
       style={{ width: size, height: size, fontSize: size / 2.8 }}>{ini}</div>

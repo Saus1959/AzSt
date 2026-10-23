@@ -1,7 +1,7 @@
 'use client';
 import { Rocket, Plane, Layers, Wind, Lock, ChevronRight, LogOut } from 'lucide-react';
 import { useState } from 'react';
-import { api } from '@/lib/client';
+import { api, avatarUrl } from '@/lib/client';
 import { useT } from '@/lib/i18n';
 import { Avatar, Badge, LangSwitch, cx } from './ui';
 
@@ -35,7 +35,7 @@ export default function GroupPicker({ user, groups }) {
       <div className="mx-auto flex max-w-4xl items-center justify-end gap-3">
         <LangSwitch />
         <div className="flex items-center gap-2 rounded-xl border border-line bg-white px-2.5 py-1.5">
-          <Avatar name={user.name} size={28} />
+          <Avatar name={user.name} src={avatarUrl(user)} size={28} />
           <span className="text-sm font-medium">{user.name}</span>
         </div>
         <button onClick={logout} title={t('signOut')} aria-label={t('signOut')}
