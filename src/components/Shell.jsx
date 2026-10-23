@@ -19,7 +19,12 @@ import { api, avatarUrl } from "@/lib/client";
 import { useT } from "@/lib/i18n";
 import { LABEL, canSee, groupName, visibleDepots } from "@/lib/constants";
 import { Avatar, LangSwitch, cx } from "./ui";
-import { usePresence, PresenceChip, PresenceNudge, PresenceModal } from "./Presence";
+import {
+  usePresence,
+  PresenceChip,
+  PresenceNudge,
+  PresenceModal,
+} from "./Presence";
 
 const UserCtx = createContext(null);
 export const useUser = () => useContext(UserCtx);
@@ -81,8 +86,12 @@ export default function Shell({ user, children }) {
             className="mx-3 mb-3 flex items-center justify-between gap-2 rounded-xl border border-line bg-brand-50 px-3 py-2 text-sm hover:bg-brand-100"
           >
             <span className="min-w-0">
-              <span className="block truncate font-semibold">{groupName(user.group)}</span>
-              <span className="block truncate text-xs text-mute">{user.title}</span>
+              <span className="block truncate font-semibold">
+                {groupName(user.group)}
+              </span>
+              <span className="block truncate text-xs text-mute">
+                {user.title}
+              </span>
             </span>
             <ArrowLeftRight size={16} className="shrink-0 text-brand-600" />
           </Link>
@@ -108,20 +117,28 @@ export default function Shell({ user, children }) {
           </nav>
         </aside>
         <div className="min-w-0 flex-1">
-          <header className="flex items-center justify-end gap-3 px-6 py-4">
+          <header className="flex flex-wrap items-center justify-end gap-2 sm:gap-3 px-4 py-3 md:px-6 md:py-4">
             <PresenceChip p={p} />
             <LangSwitch />
             <Link
               href={`/team/${user.username}`}
-              className="flex items-center gap-2 rounded-xl border border-line bg-white px-2.5 py-1.5"
+              className="flex shrink-0 items-center gap-2 rounded-xl border border-line bg-white px-2 sm:px-2.5 py-1.5"
             >
-              <Avatar name={user.name} src={avatarUrl(user)} size={28} active={p.active} />
-              <span className="text-sm font-medium">{user.name}</span>
+              <Avatar
+                name={user.name}
+                src={avatarUrl(user)}
+                size={28}
+                active={p.active}
+              />
+              {/* Скрываем имя пользователя на мобильных экранах (до breakpoint sm) */}
+              <span className="hidden sm:block text-sm font-medium">
+                {user.name}
+              </span>
             </Link>
             <button
               onClick={logout}
               title={t("signOut")}
-              className="grid h-9 w-9 place-items-center rounded-xl border border-line bg-white text-mute hover:bg-brand-50"
+              className="grid shrink-0 h-9 w-9 place-items-center rounded-xl border border-line bg-white text-mute hover:bg-brand-50"
             >
               <LogOut size={16} />
             </button>
