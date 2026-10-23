@@ -23,7 +23,7 @@ export const ROLES = {
 };
 export const TITLES = Object.keys(ROLES);
 
-export const DEPOS = ['electronics', 'mechanics', 'central']; // 3 depots in every group
+export const DEPOS = ['electronics', 'mechanics', 'programming', 'central']; // 4 depots in every group
 export const LABEL = { leadership: 'Leadership', electronics: 'Electronics', mechanics: 'Mechanics', programming: 'Programming', central: 'Central' };
 
 export const isLeader = (u) => u.position === 'leadership';

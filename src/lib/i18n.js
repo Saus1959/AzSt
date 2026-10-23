@@ -36,6 +36,7 @@ const D = {
   ],
   depot_electronics: ["Elektronika deposu", "Electronics Depo"],
   depot_mechanics: ["Mexanika deposu", "Mechanics Depo"],
+  depot_programming: ["Proqramlaşdırma deposu", "Programming Depo"],
   depot_central: ["Mərkəzi depo", "Central Depo"],
   signIn: ["Daxil ol", "Sign in"],
   signOut: ["Çıxış", "Sign out"],
@@ -88,8 +89,8 @@ const D = {
   addResource: ["Resource əlavə et", "Add resource"],
   editResource: ["Resource redaktəsi", "Edit resource"],
   depoSub: [
-    "Anbar 3 hissəyə bölünüb",
-    "The warehouse is split into 3 sections",
+    "Anbar 4 hissəyə bölünüb",
+    "The warehouse is split into 4 sections",
   ],
   note_electronics: [
     "Susmaya görə: Leadership və Electronics. Əlavə giriş admin tərəfindən verilir",
@@ -99,6 +100,11 @@ const D = {
     "Susmaya görə: Leadership və Mechanics. Əlavə giriş admin tərəfindən verilir",
     "By default: Leadership and Mechanics. Extra access is granted by an admin",
   ],
+  note_programming: [
+    "Susmaya görə: Leadership və Programming. Əlavə giriş admin tərəfindən verilir",
+    "By default: Leadership and Programming. Extra access is granted by an admin",
+  ],
+  byDefault: ["susmaya görə", "by default"],
   note_central: [
     "Susmaya görə: yalnız Leadership. Əlavə giriş admin tərəfindən verilir",
     "By default: Leadership only. Extra access is granted by an admin",

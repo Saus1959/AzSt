@@ -4,7 +4,7 @@ import { Users, FileText, Warehouse, UserCheck, Pencil, Trash2, Plus, UserRound 
 import { api, useApi, avatarUrl } from "@/lib/client";
 import { useT } from "@/lib/i18n";
 import { useUser } from "@/components/Shell";
-import { GROUPS, TITLES, DEPOS, groupName } from "@/lib/constants";
+import { GROUPS, TITLES, DEPOS, ROLES, groupName } from "@/lib/constants";
 import { Card, Btn, Badge, Avatar, Field, Modal, PageHead, Stat, inputCls } from "@/components/ui";
 
 const EMPTY_USER = { username: "", name: "", password: "", isAdmin: false };
@@ -295,12 +295,17 @@ export default function AdminPage() {
             <fieldset className="sm:col-span-2">
               <legend className="mb-1 text-sm text-mute">{t("extraDepots")}</legend>
               <div className="flex flex-wrap gap-x-5 gap-y-1.5">
-                {DEPOS.map((d) => (
-                  <label key={d} className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" checked={mForm.extraDepots.includes(d)} onChange={() => toggleDepot(d)} />
-                    {t("depot_" + d)}
-                  </label>
-                ))}
+                {DEPOS.map((d) => {
+                  const area = ROLES[mForm.title];
+                  const byDefault = area === "leadership" || area === d; // this role already sees it
+                  return (
+                    <label key={d} className="flex items-center gap-2 text-sm">
+                      <input type="checkbox" checked={byDefault || mForm.extraDepots.includes(d)} disabled={byDefault} onChange={() => toggleDepot(d)} />
+                      {t("depot_" + d)}
+                      {byDefault && <span className="text-xs text-mute">({t("byDefault")})</span>}
+                    </label>
+                  );
+                })}
               </div>
               <p className="mt-1.5 text-xs text-mute">{t("extraDepotsHint")}</p>
             </fieldset>

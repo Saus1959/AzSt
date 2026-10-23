@@ -3,6 +3,7 @@ import Depot from '@/models/Depot';
 export const DEFAULT_DEPOTS = [
   { key: 'electronics', name: 'Electronics Depo' },
   { key: 'mechanics', name: 'Mechanics Depo' },
+  { key: 'programming', name: 'Programming Depo' },
   { key: 'central', name: 'Central Depo' },
 ];
 
