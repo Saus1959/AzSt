@@ -3,12 +3,14 @@ import { useState } from "react";
 import { api } from "@/lib/client";
 import { useT } from "@/lib/i18n";
 import { Btn, Field, inputCls, LangSwitch } from "@/components/ui";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   const t = useT();
   const [f, setF] = useState({ username: "", password: "" });
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -56,11 +58,22 @@ export default function Login() {
         <Field label={t("password")}>
           <input
             required
-            type="password"
+            type={`${showPassword ? "text" : "password"}`}
             className={inputCls}
             value={f.password}
             onChange={(e) => setF({ ...f, password: e.target.value })}
           />
+          {showPassword ? (
+            <Eye
+              className="absolute right-2 top-1/2 cursor-pointer"
+              onClick={() => setShowPassword(false)}
+            />
+          ) : (
+            <EyeOff
+              className="absolute right-2 top-1/2 cursor-pointer"
+              onClick={() => setShowPassword(true)}
+            />
+          )}
         </Field>
         {err && <p className="text-sm text-rose-500">{err}</p>}
         <Btn type="submit" disabled={busy} className="w-full">
