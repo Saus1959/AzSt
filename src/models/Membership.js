@@ -16,4 +16,6 @@ MembershipSchema.index(
   { unique: true, partialFilterExpression: { user: { $type: 'objectId' } } }
 );
 
+// In dev, hot reload keeps the old compiled model (and its old schema/enum) in memory; rebuild it.
+if (process.env.NODE_ENV !== 'production' && mongoose.models.Membership) mongoose.deleteModel('Membership');
 export default mongoose.models.Membership || mongoose.model('Membership', MembershipSchema);

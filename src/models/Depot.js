@@ -36,4 +36,6 @@ const DepotSchema = new mongoose.Schema(
 );
 DepotSchema.index({ group: 1, key: 1 }, { unique: true });
 
+// In dev, hot reload keeps the old compiled model (and its old schema/enum) in memory; rebuild it.
+if (process.env.NODE_ENV !== 'production' && mongoose.models.Depot) mongoose.deleteModel('Depot');
 export default mongoose.models.Depot || mongoose.model('Depot', DepotSchema);

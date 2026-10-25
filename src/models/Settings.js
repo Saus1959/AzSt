@@ -11,4 +11,6 @@ const SettingsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// In dev, hot reload keeps the old compiled model (and its old schema/enum) in memory; rebuild it.
+if (process.env.NODE_ENV !== 'production' && mongoose.models.Settings) mongoose.deleteModel('Settings');
 export default mongoose.models.Settings || mongoose.model('Settings', SettingsSchema);

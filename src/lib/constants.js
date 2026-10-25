@@ -12,8 +12,9 @@ export const groupName = (key) => GROUPS.find((g) => g.key === key)?.name ?? key
 export const POSITIONS = ['leadership', 'electronics', 'mechanics', 'programming'];
 
 // ── Roles from the roster. A person's role belongs to a membership (user × group). ──
-// role → area it belongs to
+// role → area it belongs to. The ORDER is the rank: the first role is the highest and is listed first everywhere.
 export const ROLES = {
+  Mentor: 'leadership',
   'TK Manager': 'leadership',
   'AeroStat Manager': 'leadership',
   Captain: 'leadership',

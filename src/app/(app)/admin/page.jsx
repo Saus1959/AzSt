@@ -6,6 +6,7 @@ import { useT } from "@/lib/i18n";
 import { useUser } from "@/components/Shell";
 import { GROUPS, TITLES, DEPOS, ROLES, groupName } from "@/lib/constants";
 import { Card, Btn, Badge, Avatar, Field, Modal, PageHead, Stat, inputCls } from "@/components/ui";
+import StatusSettings from "@/components/StatusSettings";
 
 const EMPTY_USER = { username: "", name: "", password: "", isAdmin: false };
 
@@ -71,7 +72,7 @@ export default function AdminPage() {
     setMForm(
       m
         ? { id: m.id, group: m.group, user: m.user || "", title: m.title, extraDepots: m.extraDepots }
-        : { group, user: "", title: TITLES[3], extraDepots: [] },
+        : { group, user: "", title: "Electronics Engineer", extraDepots: [] },
     );
   };
   const submitMember = async (e) => {
@@ -119,6 +120,10 @@ export default function AdminPage() {
         <Stat icon={Users} label={t("statUsers")} value={s.users ?? "—"} />
         <Stat icon={Warehouse} label={t("adminDepotObjects")} value={s.depots ? depotItems : "—"} />
         <Stat icon={FileText} label={t("statDocs")} value={s.docs ?? "—"} />
+      </div>
+
+      <div className="mt-4">
+        <StatusSettings />
       </div>
 
       {/* groups and access */}

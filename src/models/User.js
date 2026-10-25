@@ -16,4 +16,6 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// In dev, hot reload keeps the old compiled model (and its old schema/enum) in memory; rebuild it.
+if (process.env.NODE_ENV !== 'production' && mongoose.models.User) mongoose.deleteModel('User');
 export default mongoose.models.User || mongoose.model('User', UserSchema);
