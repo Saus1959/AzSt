@@ -42,7 +42,7 @@ export default function Login() {
               backgroundSize: "cover",
             }}
           ></div>
-          <h1 className="text-xl font-semibold">AzST - CRM</h1>
+          <h1 className="text-xl font-semibold">AzST - Portal</h1>
           <p className="mt-1 text-sm text-mute">{t("signInSub")}</p>
         </div>
         <Field label={t("username")}>
