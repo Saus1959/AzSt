@@ -36,3 +36,22 @@ export async function fileToAvatar(file, size = 256) {
 
 // Is this person marked "at work" right now? (u.activeUntil is an ISO string or null)
 export const isActive = (u, now = Date.now()) => !!u?.activeUntil && new Date(u.activeUntil).getTime() > now;
+
+// Number of unread news (navbar badge). Refreshes when `key` changes (e.g. the route), every minute,
+// and whenever any component dispatches window event 'news:changed'.
+export function useUnreadNews(key) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    let off = false;
+    const load = () => {
+      if (document.hidden) return;
+      api('/api/news/unread').then((d) => !off && setN(d.count || 0)).catch(() => {});
+    };
+    load();
+    const iv = setInterval(load, 60000);
+    window.addEventListener('news:changed', load);
+    return () => { off = true; clearInterval(iv); window.removeEventListener('news:changed', load); };
+  }, [key]);
+  return n;
+}
+export const newsChanged = () => window.dispatchEvent(new Event('news:changed'));

@@ -8,14 +8,13 @@ import {
   Wrench,
   Code2,
   Warehouse,
-  Crown,
-  FileText,
   Users,
   LogOut,
   ShieldCheck,
   ArrowLeftRight,
+  CheckSquare,
 } from "lucide-react";
-import { api, avatarUrl } from "@/lib/client";
+import { api, avatarUrl, useUnreadNews } from "@/lib/client";
 import { useT } from "@/lib/i18n";
 import { LABEL, canSee, groupName, visibleDepots } from "@/lib/constants";
 import { Avatar, LangSwitch, cx } from "./ui";
@@ -32,19 +31,21 @@ const ICON = {
   electronics: Cpu,
   mechanics: Wrench,
   programming: Code2,
-  leadership: Crown,
 };
 
 export default function Shell({ user, children }) {
   const path = usePathname();
   const t = useT();
   const p = usePresence(user);
+  const unreadNews = useUnreadNews(path);
+
   const sec = (p) =>
     canSee(user, p) && {
       href: `/section/${p}`,
       label: LABEL[p],
       Icon: ICON[p],
     };
+
   const nav = [
     { href: "/dashboard", label: "Dashboard", Icon: LayoutDashboard },
     sec("electronics"),
@@ -55,8 +56,7 @@ export default function Shell({ user, children }) {
       label: "Depo",
       Icon: Warehouse,
     },
-    sec("leadership"),
-    { href: "/docs", label: "Docs", Icon: FileText },
+    { href: "/tasks", label: t("tasksAndNews"), Icon: CheckSquare, badge: unreadNews },
     { href: "/team", label: "Team", Icon: Users },
     user.isAdmin && { href: "/admin", label: "Admin", Icon: ShieldCheck },
   ].filter(Boolean);
@@ -78,7 +78,7 @@ export default function Shell({ user, children }) {
                 backgroundSize: "cover",
               }}
             ></div>
-            <span className="font-semibold">AzSt</span>
+            <span className="font-semibold">AzST</span>
           </div>
           <Link
             href="/groups"
@@ -96,7 +96,7 @@ export default function Shell({ user, children }) {
             <ArrowLeftRight size={16} className="shrink-0 text-brand-600" />
           </Link>
           <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:overflow-visible">
-            {nav.map(({ href, label, Icon }) => {
+            {nav.map(({ href, label, Icon, badge }) => {
               const active = path === href || path.startsWith(href + "/");
               return (
                 <Link
@@ -111,6 +111,14 @@ export default function Shell({ user, children }) {
                 >
                   <Icon size={18} />
                   {label}
+                  {badge > 0 && (
+                    <span
+                      title={t("unreadNews")}
+                      className="ml-auto grid h-5 min-w-5 place-items-center rounded-full bg-rose-500 px-1.5 text-[11px] font-semibold leading-none text-white"
+                    >
+                      {badge > 99 ? "99+" : badge}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -130,7 +138,6 @@ export default function Shell({ user, children }) {
                 size={28}
                 active={p.active}
               />
-              {/* Скрываем имя пользователя на мобильных экранах (до breakpoint sm) */}
               <span className="hidden sm:block text-sm font-medium">
                 {user.name}
               </span>

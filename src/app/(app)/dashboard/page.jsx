@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { Boxes, PauseCircle, FileText, Users } from "lucide-react";
+import { Boxes, PauseCircle, FileText, Users, Clock } from "lucide-react";
 import { useApi, avatarUrl, isActive } from "@/lib/client";
 import { useT } from "@/lib/i18n";
 import { useUser } from "@/components/Shell";
 import { groupName } from "@/lib/constants";
-import { Card, Badge, Avatar, PageHead, Stat } from "@/components/ui";
+import { Card, Badge, Avatar, PageHead, Stat, cx } from "@/components/ui";
+import { isDoneFor, isOverdue } from "@/lib/taskUtils";
 
 export default function Dashboard() {
   const t = useT();
@@ -20,6 +21,11 @@ export default function Dashboard() {
   );
   const depotName = (k) => t("depot_" + k);
   const onDuty = team.filter((u) => isActive(u));
+
+  // My open tasks: nearest deadline first, no-deadline tasks last
+  const myTasks = (useApi("/api/tasks").data?.tasks || [])
+    .filter((x) => x.mine && !isDoneFor(x, user.id))
+    .sort((a, b) => (a.dueDate ? new Date(a.dueDate) : Infinity) - (b.dueDate ? new Date(b.dueDate) : Infinity));
 
   return (
     <>
@@ -109,6 +115,35 @@ export default function Dashboard() {
         </Card>
 
         <div className="space-y-4">
+        <Card>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 font-semibold">
+              {t("myTasks")} {myTasks.length > 0 && <Badge tone={myTasks.some(isOverdue) ? "rose" : "blue"}>{myTasks.length}</Badge>}
+            </h2>
+            <Link href="/tasks" className="text-xs text-brand-600 hover:underline">{t("viewAll")}</Link>
+          </div>
+          {!myTasks.length ? (
+            <p className="text-sm text-mute">{t("noOpenTasks")}</p>
+          ) : (
+            <ul className="space-y-2.5">
+              {myTasks.slice(0, 5).map((x) => {
+                const late = isOverdue(x);
+                return (
+                  <li key={x._id}>
+                    <Link href="/tasks" className={cx("block rounded-xl border px-3 py-2 text-sm", late ? "border-rose-300 bg-rose-50" : "border-line hover:bg-brand-50")}>
+                      <div className="truncate font-medium">{x.title}</div>
+                      <div className={cx("mt-0.5 flex items-center text-xs", late ? "font-semibold text-rose-600" : "text-mute")}>
+                        <Clock size={12} className="mr-1" />
+                        {x.dueDate ? new Date(x.dueDate).toLocaleDateString() : t("noDeadline")}
+                        {late && ` · ${t("overdue")}`}
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </Card>
         <Card>
           <h2 className="mb-3 flex items-center gap-2 font-semibold">{t("onDuty")} <Badge tone="green">{onDuty.length}</Badge></h2>
           {!onDuty.length ? (
