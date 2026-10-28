@@ -55,3 +55,11 @@ export function useUnreadNews(key) {
   return n;
 }
 export const newsChanged = () => window.dispatchEvent(new Event('news:changed'));
+
+// Like api(), but sends FormData (file uploads). The browser sets the multipart boundary itself.
+export async function apiForm(url, method, form) {
+  const res = await fetch(url, { method, body: form });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw Object.assign(new Error(data.error || 'Error'), { status: res.status });
+  return data;
+}

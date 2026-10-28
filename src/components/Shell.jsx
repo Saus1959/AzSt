@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   ArrowLeftRight,
   CheckSquare,
+  FileText,
 } from "lucide-react";
 import { api, avatarUrl, useUnreadNews } from "@/lib/client";
 import { useT } from "@/lib/i18n";
@@ -57,6 +58,7 @@ export default function Shell({ user, children }) {
       Icon: Warehouse,
     },
     { href: "/tasks", label: t("tasksAndNews"), Icon: CheckSquare, badge: unreadNews },
+    { href: "/docs", label: "Docs", Icon: FileText },
     { href: "/team", label: "Team", Icon: Users },
     user.isAdmin && { href: "/admin", label: "Admin", Icon: ShieldCheck },
   ].filter(Boolean);

@@ -294,6 +294,17 @@ const D = {
   area_mechanics: ["Mexanika", "Mechanics"],
   area_programming: ["Proqramlaşdırma", "Programming"],
   area_leadership: ["Rəhbərlik", "Leadership"],
+  docFile: ["Fayl", "File"],
+  maxSize: ["Maks. ölçü", "Max size"],
+  dropFile: ["Faylı bura sürüşdürün və ya seçmək üçün toxunun", "Drop a file here or click to choose"],
+  removeFile: ["Faylı sil", "Remove file"],
+  replaceHint: ["Yeni fayl seçsəniz, köhnəsi əvəz olunacaq", "Choosing a new file replaces the current one"],
+  fileBadType: ["Bu fayl formatı dəstəklənmir", "This file format is not supported"],
+  fileTooBig: ["Fayl çox böyükdür (maks. {mb} MB)", "File is too large (max {mb} MB)"],
+  download: ["Yüklə", "Download"],
+  preview: ["Bax", "Preview"],
+  uploading: ["Yüklənir…", "Uploading…"],
+  allDepartments: ["Bütün şöbələr", "All departments"],
 };
 
 export function useT() {
